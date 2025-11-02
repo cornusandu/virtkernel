@@ -1,0 +1,61 @@
+#pragma once
+
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/ioctl.h>
+#include <sys/wait.h>
+#include <sys/param.h>
+#include <sys/mman.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <sys/utsname.h>
+#include <sys/select.h>
+#include <sys/epoll.h>
+#include <sys/eventfd.h>
+#include <sys/timerfd.h>
+#include <sys/inotify.h>
+#include <sys/resource.h>
+#include <sys/uio.h>
+
+#include <arpa/inet.h>
+#include <dirent.h>
+#include <dlfcn.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <grp.h>
+#include <ifaddrs.h>
+#include <libgen.h>
+#include <link.h>
+#include <malloc.h>
+#include <net/if.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <netinet/ip.h>
+#include <netinet/tcp.h>
+#include <poll.h>
+#include <pthread.h>
+#include <pwd.h>
+#include <sched.h>
+#include <semaphore.h>
+#include <setjmp.h>
+#include <signal.h>
+#include <spawn.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include <syslog.h>
+#include <termios.h>
+#include <time.h>
+#include <ucontext.h>
+#include <utime.h>
+#include <wchar.h>
+#include <wctype.h>
+#include <sys/syscall.h>
+
+#define _use_C extern "C"
+#define _i inline
