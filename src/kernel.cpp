@@ -2,28 +2,26 @@
 #include "builtin.hpp"
 
 #include "allocate.hpp"
-
+#include "io.hpp"
 #include "statemanager.hpp"
-
 #include "management.hpp"
 
 kernel::StateManager *state = nullptr;
 
-extern "C" void main_();
+extern "C" void main_(kernel::StateManager& state);
 extern "C" [[noreturn]] void _boot();
 
-int main() {_boot();}
+int main() {_boot(); return 0xFFFF;}  // if 0xFFFF is returned, UB was reached  --  a [[noreturn]] function that shouldn't return has returned.
 
 [[noreturn]] void _boot() {
+    kio::_setup();
     kallocate::_setup();
     state = new kernel::StateManager(0, 4096);
     main_(*state);
-    ksys::exit(0);
+    exit(0);
     __builtin_unreachable();
 }
 
 void main_(kernel::StateManager& state) {
-    std::cout << "Hello, World!" << std::endl;
-
-    write(1, "Hi, there", strlen("Hi, there") - 2);
+    kstd::writeout("Hello, World!", 0);
 }

@@ -13,4 +13,5 @@ for arg in "$@"; do
 done
 
 g++ ./src/allocate/allocate.cpp ./src/statemanager.cpp $additionalflags -fPIC -shared -o ./dist/allocate.so
-g++ ./src/kernel.cpp ./src/statemanager.cpp $additionalflags -o ./dist/main.bin -no-pie -ldl
+g++ ./src/io/io.cpp $additionalflags -fPIC -shared -o ./dist/io.so
+g++ ./src/kernel.cpp ./src/statemanager.cpp $additionalflags -o ./dist/main.bin -ldl -fPIE
