@@ -5,19 +5,25 @@
 
 #include "statemanager.hpp"
 
+#include "management.hpp"
+
 kernel::StateManager *state = nullptr;
 
-int main();
+extern "C" void main_();
+extern "C" [[noreturn]] void _boot();
 
-extern "C" void _boot();
+int main() {_boot();}
 
-void _boot() {
+[[noreturn]] void _boot() {
     kallocate::_setup();
     state = new kernel::StateManager(0, 4096);
-    uint8_t exitcode = main();
-    syscall(SYS_exit, exitcode);
+    main_(*state);
+    ksys::exit(0);
+    __builtin_unreachable();
 }
 
-int main() {
+void main_(kernel::StateManager& state) {
+    std::cout << "Hello, World!" << std::endl;
+
     write(1, "Hi, there", strlen("Hi, there") - 2);
 }

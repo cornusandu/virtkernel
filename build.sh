@@ -2,5 +2,15 @@
 
 set -e
 
-g++ ./src/allocate/allocate.cpp -fPIC -shared -o ./dist/allocate.so -nostartfiles
-g++ ./src/kernel.cpp ./src/statemanager.cpp -fPIE -o ./dist/main.bin -Wl,-e,_boot
+args=("$@")
+additionalflags="-fvisibility=hidden"
+
+for arg in "$@"; do
+    if [ "$arg" == "-g" ]; then
+        echo "Using debug flags"
+        additionalflags="$additionalflags -g"
+    fi
+done
+
+g++ ./src/allocate/allocate.cpp ./src/statemanager.cpp $additionalflags -fPIC -shared -o ./dist/allocate.so
+g++ ./src/kernel.cpp ./src/statemanager.cpp $additionalflags -o ./dist/main.bin -no-pie -ldl

@@ -8,7 +8,9 @@ namespace kstd {
 
 namespace kallocate {
     _i void _setup() {
-        auto lib = dlopen("./allocate.so", RTLD_LAZY | RTLD_GLOBAL);
+        std::cerr << "LOADING LIB" << std::endl;
+
+        auto lib = dlopen("./allocate.so", RTLD_LAZY | RTLD_LOCAL);
 
         if (!lib) {
             std::cerr << "dlopen failed: " << dlerror() << "\n";
@@ -16,7 +18,11 @@ namespace kallocate {
             syscall(SYS_exit, 1);
         }
 
+        std::cerr << "LOADING FUNC" << std::endl;
+
         kstd::allocate = (void*(*)(uint64_t, const kernel::StateManager& state)) dlsym(lib, "allocate");
+
+        std::cerr << "FUNC LOADED" << std::endl;
 
         const char* dlsym_error = dlerror();
         if (dlsym_error) {
