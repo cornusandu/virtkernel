@@ -1,6 +1,5 @@
 name: C++ Build Check
 
-# Triggers the workflow on push or pull request events for the main branch
 on:
   push:
     branches:
@@ -11,7 +10,6 @@ on:
 
 jobs:
   build:
-    # Use a standard Linux runner
     runs-on: ubuntu-latest
 
     steps:
@@ -19,17 +17,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Set up the necessary build tools (g++)
-      - name: Setup C++ Environment
-        uses: actions/setup-cpp@v1
-        with:
-          compiler: g++
-
-      # 3. Create the 'dist' directory, as your build script relies on it
+      # 2. Create the 'dist' directory (if not version controlled)
       - name: Create dist directory
         run: mkdir -p dist
 
-      # 4. Make the build script executable and run it
+      # 3. Make the build script executable and run it
       - name: Run Build Script
         run: |
           chmod +x build.sh
