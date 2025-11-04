@@ -56,6 +56,7 @@
 #include <wchar.h>
 #include <wctype.h>
 #include <sys/syscall.h>
+#include <cstring>
 
 #define _use_C extern "C"
 #define _i inline

@@ -1,5 +1,9 @@
+#pragma once
+
 #include "builtin.hpp"
 #include "statemanager.hpp"
+#include "management.hpp"
+#include "io.hpp"
 #include <iostream>
 
 namespace kstd {
@@ -8,34 +12,27 @@ namespace kstd {
 
 namespace kallocate {
     _i void _setup() {
-        std::cerr << "LOADING LIB" << std::endl;
 
         auto lib = dlopen("./allocate.so", RTLD_LAZY | RTLD_LOCAL);
 
         if (!lib) {
-            std::cerr << "dlopen failed: " << dlerror() << "\n";
-            fflush(stdout);
-            syscall(SYS_exit, 1);
+            kstd::writeout("dlopen failed.\0", true);
+            ksys::exit(1);
         }
-
-        std::cerr << "LOADING FUNC" << std::endl;
 
         kstd::allocate = (void*(*)(uint64_t, const kernel::StateManager& state)) dlsym(lib, "allocate");
 
-        std::cerr << "FUNC LOADED" << std::endl;
-
         const char* dlsym_error = dlerror();
         if (dlsym_error) {
-            write(2, "dlsym failed: ", 14);
-            write(2, dlsym_error, strlen(dlsym_error));
-            write(2, "\n", 1);
-            syscall(SYS_exit, 1);
+            kstd::writeout("dlsym failed: ", true);
+            kstd::writeout(dlsym_error, true);
+            kstd::writeout("\n\0", true);
+            ksys::exit(1);
         }
 
         if (!kstd::allocate) {
-            std::cerr << "dlsym failed: " << dlerror() << "\n";
-            fflush(stdout);
-            syscall(SYS_exit, 1);
+            kstd::writeout("dlsym failed.", true);
+            ksys::exit(1);
         }
     }
 }
