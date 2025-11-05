@@ -17,8 +17,7 @@
 #include <cstring>
 #include <cerrno>
 #include <cstdio>
-
-extern "C" int customsyscall(const struct seccomp_notif &req, struct seccomp_notif_resp &resp);
+#include "customsyscalls.hpp"
 
 void seccomp_notify_loop(int listener_fd) {
     for (;;) {
@@ -34,7 +33,7 @@ void seccomp_notify_loop(int listener_fd) {
         }
 
         // let user code decide what to do; it must fill `resp`
-        int rc = customsyscall(req, resp);
+        int rc = ksyscall::customsyscall(req, resp);
         if (rc != 0) {
             // If user handler failed, reply with -ENOSYS to the tracee
             resp.id = req.id;

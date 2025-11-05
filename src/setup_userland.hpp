@@ -1,0 +1,1 @@
+void seccomp_notify_loop(int listener_fd);
